@@ -1,37 +1,40 @@
-use ratatui_templates::app::{App, AppResult};
-use ratatui_templates::event::{Event, EventsPublisher};
-use ratatui_templates::handler::handle_key_events;
-use ratatui_templates::tui::Tui;
-use std::io;
-use ratatui::backend::CrosstermBackend;
-use ratatui::Terminal;
+// In src/main.rs
+use ratatui_templates::app::AppResult;
+use ratatui_templates::connection::{get_data, CityInfo};
 
 #[tokio::main]
 async fn main() -> AppResult<()> {
-    // Create an application.
-    // let app =
+    println!("=======================================================");
+    println!("           WEATHER INFORMATION FOR ROMANIA             ");
+    println!("=======================================================");
 
-    // Setup the terminal
-    let backend = CrosstermBackend::new(io::stderr());
-    let terminal = Terminal::new(backend)?;
+    let cities = vec!["Bucharest", "Craiova", "Timisoara", "Iasi", "Constanta", "Brasov", "Cluj-Napoca", "Galati", "Ploiesti", "Oradea"];
 
+    for city in cities {
+        println!("Fetching weather data for {}...", city);
 
-    // TODO: create the events pubisher
-    // let events_publisher= ...
+        match get_data(city.to_string()).await {
+            Ok(info) => {
+                println!("{}, {} - Current Weather", info.name, info.country);
+                println!("  Timezone: UTC{:+}", info.timezone / 3600);
+                println!("  Sunrise: {}", info.sunrise.format("%H:%M:%S"));
+                println!("  Sunset: {}", info.sunset.format("%H:%M:%S"));
+                println!("  Weather: {}", info.weather);
+                println!("  Temperature: {}°C", info.temperature);
+                println!("  Humidity: {}%", info.humidity);
+                println!("  Wind Speed: {} m/s", info.wind_speed);
+                println!("  Pressure: {} hPa", info.pressure);
+                println!("  Visibility: {} meters", info.visibility);
+                println!("  Description: {}", info.description);
+                println!("-------------------------------------------------------");
+            },
+            Err(e) => {
+                println!("Error getting data for {}: {}", city, e);
+                println!("-------------------------------------------------------");
+            }
+        }
+    }
 
-    // TODO: init the terminal user interface
-    // let mut tui =
-
-    // Start the main loop.
-    // while app.running {
-        // TODO: Render the user interface.
-
-        // TODO: Handle events.
-        // Hint: wait for events and handle them
-
-    // }
-
-    // TODO: Reset the terminal if the app has been terminated
-
+    println!("Weather information retrieved successfully!");
     Ok(())
 }
