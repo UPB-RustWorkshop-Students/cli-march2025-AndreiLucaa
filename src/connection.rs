@@ -66,6 +66,7 @@ fn parse_weather_data(data: &serde_json::Value, city_name: &str) -> Result<CityI
         country: country.to_string(),
         timezone,
         sunrise,
+
         sunset,
     })
 }
