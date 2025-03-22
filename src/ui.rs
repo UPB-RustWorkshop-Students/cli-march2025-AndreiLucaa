@@ -9,6 +9,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     // - https://github.com/ratatui/ratatui/tree/main/ratatui/examples
 
     // TODO: Split the layout
+
     // let [area1, area2, area3 ...] =
 
     // TODO: get the list of cities
