@@ -38,7 +38,6 @@ pub fn get_data(city: String) -> Result<CityInfo, String> {
         }
     }
 }
-
 fn parse_weather_data(data: &serde_json::Value, city_name: &str) -> Result<CityInfo, String> {
     // Extract relevant fields from JSON
     let country = data["sys"]["country"].as_str()
